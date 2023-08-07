@@ -28,7 +28,8 @@ const LeftSidebar = () => {
                 <p className='text-gray-300 max-lg:hidden'>{link.label}</p>
               </Link>
             )
-          })}
+          }
+          )}
       </div>
 
       <div className='mt-10 px-6'>
