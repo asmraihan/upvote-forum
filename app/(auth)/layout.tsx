@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
             <ClerkProvider>
                 <html lang="en">
-                    <body className={`${inter.className} bg-slate-900` }>
+                    <body className={`${inter.className} bg-zinc-950` }>
                     {children}
                     </body>
                 </html>

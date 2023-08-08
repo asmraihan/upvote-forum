@@ -26,7 +26,7 @@ export default function RootLayout({
         <body className={`${inter.className} bg-slate-50`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
-          <main className='flex'>
+          <main className='flex flex-row'>
             <LeftSidebar />
               <section className='flex min-h-screen flex-1 flex-col items-center bg-black/95 px-6 pb-10 pt-28 max-md:pb-32 sm:px-10'>
                   <div className='w-full max-w-4xl'>

@@ -5,7 +5,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <nav className='fixed top-0 z-30 flex w-full items-center justify-between bg-black/80 px-8 py-3'>
+    <nav className='fixed top-0 z-30 flex w-full items-center justify-between bg-neutral-950 border-b border-b-black px-8 py-3'>
       <Link href="/" className='flex items-center gap-4'>
         <Image src='/logo.svg' width={28} height={28} alt='logo' />
         <p className='text-3xl font-bold text-white'>Upvote</p>
