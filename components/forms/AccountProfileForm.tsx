@@ -20,6 +20,8 @@ import Image from 'next/image'
 import { Textarea } from '../ui/textarea'
 import { isBase64 } from '@/lib/utils'
 import { useUploadThing } from '@/lib/uploadthing'
+import { updateUser } from '@/actions/user-actions'
+import { usePathname, useRouter } from 'next/navigation'
 interface AccountProfileFormProps {
     user: {
         id: string,
@@ -36,14 +38,15 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
     user, btnText
 }) => {
     const [files, setFiles] = useState<File[]>([])
-
     const { startUpload } = useUploadThing("media")
+    const router = useRouter()
+    const pathname = usePathname()
 
     const form = useForm({
         resolver: zodResolver(userValidation),
         defaultValues: {
             profile_photo: user?.image || '',
-            name: user?.name  || '',
+            name: user?.name || '',
             username: user?.username || '',
             bio: user?.bio || '',
         }
@@ -53,11 +56,11 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
         e.preventDefault()
 
         const fileReader = new FileReader()
-        if(e.target.files && e.target.files.length > 0) {
+        if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0]
             setFiles(Array.from(e.target.files))
-            if(!file.type.includes('image')) return
-            
+            if (!file.type.includes('image')) return
+
             fileReader.onload = async (event) => {
                 const imageDataUrl = event.target?.result?.toString() || ''
                 fieldChange(imageDataUrl)
@@ -67,16 +70,30 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
         }
     }
 
-    const  onSubmit = async (values: z.infer<typeof userValidation>) => {
+    const onSubmit = async (values: z.infer<typeof userValidation>) => {
         const blob = values.profile_photo
         const isImageChanged = isBase64(blob)
-        if(isImageChanged){
+        if (isImageChanged) {
             const imgRes = await startUpload(files)
-            if(imgRes && imgRes[0].fileUrl) {
+            if (imgRes && imgRes[0].fileUrl) {
                 values.profile_photo = imgRes[0].fileUrl
             }
         }
-        // TODO: update user
+        // update user
+        await updateUser({
+            userId: user.id,
+            username: values.username,
+            name: values.name,
+            image: values.profile_photo,
+            bio: values.bio,
+            path: pathname
+        })
+        
+        if(pathname === '/profile/edit') {
+            router.back()
+        } else {
+            router.push('/')
+        }
     }
 
     return (
