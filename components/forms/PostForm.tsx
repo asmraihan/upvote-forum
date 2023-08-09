@@ -47,7 +47,7 @@ const PostForm = ({ userId }: { userId: string }) => {
     })
 
     const onSubmit = async (values: z.infer<typeof PostValidation>) => {
-        console.log(values)
+        await createPost()
     }
 
     return (
