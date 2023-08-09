@@ -129,7 +129,7 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
                                     onChange={(e) => handleImage(e, field.onChange)}
                                 />
                             </FormControl>
-
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -148,7 +148,7 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
                                     {...field}
                                 />
                             </FormControl>
-
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -167,7 +167,7 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
                                     {...field}
                                 />
                             </FormControl>
-
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -186,7 +186,7 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
                                     {...field}
                                 />
                             </FormControl>
-
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
