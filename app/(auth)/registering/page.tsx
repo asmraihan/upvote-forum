@@ -25,10 +25,10 @@ const page = async() => {
     <main className='flex justify-center items-center bg-zinc-900'>
          <section className='w-1/2'>
            <div
-                className='w-full h-screen flex flex-col items-center justify-center p-12 bg-cover bg-no-repeat'
-                style={{ backgroundImage: `url('/images/Register-Background.png')` }}>
+                className='w-full h-screen flex flex-col items-center justify-center p-12 bg-cover bg-primary/50 bg-blend-multiply bg-no-repeat'
+                style={{ backgroundImage: `url('/images/Register-Background.png')`}}>
 
-            <h1 className="text-white text-3xl mb-3">Welcome</h1>
+            <h1 className="text-white text-4xl font-bold mb-3">Welcome</h1>
             <div>
               <p className="text-white">Join the forum by filling additional info that will make your experience more 👍 <a href="" className="text-blue-600 font-semibold">Learn more</a></p>
             </div>
