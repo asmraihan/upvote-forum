@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { userValidation } from '@/lib/validations/user'
@@ -18,7 +18,8 @@ import { Input } from "@/components/ui/input"
 import * as z from "zod"
 import Image from 'next/image'
 import { Textarea } from '../ui/textarea'
-
+import { isBase64 } from '@/lib/utils'
+import { useUploadThing } from '@/lib/uploadthing'
 interface AccountProfileFormProps {
     user: {
         id: string,
@@ -34,42 +35,64 @@ interface AccountProfileFormProps {
 const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
     user, btnText
 }) => {
+    const [files, setFiles] = useState<File[]>([])
+
+    const { startUpload } = useUploadThing("media")
 
     const form = useForm({
         resolver: zodResolver(userValidation),
         defaultValues: {
             profile_photo: user?.image || '',
-            name: user?.name || '',
+            name: user?.name  || '',
             username: user?.username || '',
             bio: user?.bio || '',
         }
     })
 
-    const handleImage = (e: ChangeEvent, fieldChange: (value: string) => void) => {
+    const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
         e.preventDefault()
+
+        const fileReader = new FileReader()
+        if(e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0]
+            setFiles(Array.from(e.target.files))
+            if(!file.type.includes('image')) return
+            
+            fileReader.onload = async (event) => {
+                const imageDataUrl = event.target?.result?.toString() || ''
+                fieldChange(imageDataUrl)
+            }
+
+            fileReader.readAsDataURL(file)
+        }
     }
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof userValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    const  onSubmit = async (values: z.infer<typeof userValidation>) => {
+        const blob = values.profile_photo
+        const isImageChanged = isBase64(blob)
+        if(isImageChanged){
+            const imgRes = await startUpload(files)
+            if(imgRes && imgRes[0].fileUrl) {
+                values.profile_photo = imgRes[0].fileUrl
+            }
+        }
+        // TODO: update user
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-10">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-4">
                 <FormField
                     control={form.control}
                     name="profile_photo"
                     render={({ field }) => (
                         <FormItem className='flex items-center gap-4 '>
-                            <FormLabel className='flex h-24 w-24 items-center justify-center rounded-full bg-zinc-800'>
+                            <FormLabel className='flex h-16 w-16 items-center justify-center rounded-full bg-zinc-800'>
                                 {field.value ? (
                                     <Image src={field.value}
                                         alt='profile_photo'
-                                        width={96}
-                                        height={96}
+                                        width={64}
+                                        height={64}
                                         priority
                                         className='rounded-full object-contain '
                                     />
@@ -85,7 +108,6 @@ const AccountProfileForm: React.FC<AccountProfileFormProps> = ({
                             <FormControl className='flex-1 text-base font-semibold text-gray-300'>
                                 <Input type='file'
                                     accept='image/*'
-                                    placeholder='Upload Profile Photo'
                                     className='cursor-pointer border-none bg-transparent outline-none file:text-blue-600'
                                     onChange={(e) => handleImage(e, field.onChange)}
                                 />

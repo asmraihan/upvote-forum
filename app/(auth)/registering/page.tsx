@@ -11,18 +11,31 @@ const page = async() => {
     id: user?.id,
     objectId: userInfo?._id,
     username: userInfo?.username || user?.username,
-    name: userInfo?.name || user?.firstName || "",
+    name: userInfo?.name || user?.firstName + " " + user?.lastName || "", /* FIX */
     bio: userInfo?.bio || "",
     image: userInfo?.image || user?.imageUrl,
   }
   return (
-    <main className='mx-auto flex max-w-3xl flex-col justify-start px-10 py-20'>
-          <h1 className='text-gray-100 text-xl font-semibold'>
+    /* 
+     <h1 className='text-gray-100 text-xl font-semibold'>
             Additional information
           </h1>
           <p className='text-gray-300 mt-3 font-semibold'>Complete your profile</p>
+    */
+    <main className='flex justify-center items-center bg-zinc-900'>
+         <section className='w-1/2'>
+           <div
+                className='w-full h-screen flex flex-col items-center justify-center p-12 bg-cover bg-no-repeat'
+                style={{ backgroundImage: `url('/images/Register-Background.png')` }}>
 
-          <section className='mt-10 bg-zinc-900 p-10'>
+            <h1 className="text-white text-3xl mb-3">Welcome</h1>
+            <div>
+              <p className="text-white">Join the forum by filling additional info that will make your experience more 👍 <a href="" className="text-blue-600 font-semibold">Learn more</a></p>
+            </div>
+          </div>
+         </section>
+
+          <section className='m-10 w-1/2'>
             <AccountProfileForm user={userData} btnText='Continue' />
           </section>
     </main>
