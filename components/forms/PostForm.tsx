@@ -19,6 +19,7 @@ import { Textarea } from '../ui/textarea'
 import { usePathname, useRouter } from 'next/navigation'
 // import { updateUser } from '@/actions/user-actions'
 import { PostValidation } from '@/lib/validations/post'
+import { createPost } from '@/actions/post-action'
 
 interface AccountProfileFormProps {
     user: {
@@ -47,7 +48,12 @@ const PostForm = ({ userId }: { userId: string }) => {
     })
 
     const onSubmit = async (values: z.infer<typeof PostValidation>) => {
-        await createPost()
+        await createPost({
+            text: values.post,
+            author: userId,
+            path: pathname
+        })
+        router.push('/')
     }
 
     return (
@@ -73,7 +79,7 @@ const PostForm = ({ userId }: { userId: string }) => {
                     )}
                 />
                   <Button type="submit"
-                    className='w-fit ml-auto bg-primary text-white font-semibold rounded-md'
+                    className='w-fit ml-auto  bg-primary text-white font-semibold rounded-md'
                 >Submit</Button>
             </form>
         </Form>
