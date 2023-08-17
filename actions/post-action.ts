@@ -35,3 +35,33 @@ export async function createPost({
         throw new Error(`Failed to create post ${error.message}`)
     }
 }
+
+
+export async function fetchPosts(pageNumber = 1, pageSize = 20) {
+    connectToDB()
+    //calculate skip
+    const skips = (pageNumber - 1) * pageSize
+
+    //fetch the top lvl posts not comments or reply
+    const postsQuery = Post.find({ parentId: { $in: [null, undefined] } })
+        .sort({ createdAt: 'descending' })
+        .skip(skips)
+        .limit(pageSize)
+        .populate({ path: 'author', model: User })
+        .populate({
+            path: 'children',
+            populate: {
+                path: 'author',
+                model: User,
+                select: "_id name parentId image"
+
+            }
+        })
+    const totalPostsCount = await Post.countDocuments({ parentId: { $in: [null, undefined] } })
+
+    const posts = await postsQuery.exec()
+
+    const isNextPage = totalPostsCount > skips + posts.length
+
+    return { posts, isNextPage }
+}
