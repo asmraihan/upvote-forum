@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs";
 export default async function Home() {
   const user = await currentUser();
   const result = await fetchPosts(1, 30);
-  console.log(result);
+  console.log(result, "result");
   return (
     <>
       <section className="mt-9 flex-col gap-10">
@@ -20,7 +20,7 @@ export default async function Home() {
                   <PostCard
                     key={post._id}
                     id={post._id}
-                    currentUserId={user?.id}
+                    currentUserId={user?.id || ''}
                     parentId={post.parentId}
                     content={post.text}
                     author={post.author}

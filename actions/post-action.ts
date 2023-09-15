@@ -39,6 +39,7 @@ export async function createPost({
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     connectToDB()
+    
     //calculate skip
     const skips = (pageNumber - 1) * pageSize
 
