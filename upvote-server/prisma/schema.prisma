@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+//  TODO AUTHORITY MODELS
+
+model user {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String   @unique
+  password   String?
+  profileUrl String?
+  createdAt  DateTime @default(now())
+
+  blogs blog[]
+}
+
+model blog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  imageUrl  String
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.ObjectId
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String   @db.ObjectId
+  category   category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+
+  blogs blog[]
+}
+
+//  TODO ACTIVITY MODEL
+
+model activity {
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  type String
+  user String
+  des  String
+  date DateTime @default(now())
+}
