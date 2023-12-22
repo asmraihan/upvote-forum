@@ -14,8 +14,9 @@ const fs = require("fs");
 const console = require("console");
 
 //? MIDDLEWARES
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 var corsOptions = {
     origin: "*",
     optionsSuccessStatus: 200,
