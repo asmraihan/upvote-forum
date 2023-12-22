@@ -22,19 +22,14 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(fileupload());
-// const publicDirectory = path.join(__dirname + "public");
-// app.use(express.static(publicDirectory));
-// app.use("image", express.static(publicDirectory + "/image/"));
 
 
 //? CONTROLERS IMPORT
 const auth = require("./routes/auth")
-const blog = require("./routes/blog")
 
 
 //? CONTROLLERS USE
 app.use("/auth", auth)
-app.use("/blog", blog)
 
 
 //? VIEW ENGINE
