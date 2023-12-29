@@ -16,6 +16,7 @@ type AuthErrorType = {
   email?: string;
   username?: string;
   password?: string;
+   password_confirmation?: string;
 };
 
 type PostErrorType = {

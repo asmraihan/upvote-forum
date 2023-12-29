@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Env from "@/config/env";
 import { Backend_URL } from "@/lib/constants";
 import { useSession } from "next-auth/react";
+
 export default function Register() {
   const router = useRouter();
   const { status } = useSession();
@@ -34,6 +35,39 @@ console.log(Backend_URL)
 
 const submit = async (event: React.FormEvent) => {
   event.preventDefault();
+  // validate the form
+
+  if (!authState.name) {
+    setErrors({ ...errors, name: "Name is required" });
+    return;
+  }
+  if (!authState.username) {
+    setErrors({ ...errors, username: "Username is required" });
+    return;
+  }
+  if (!authState.email) {
+    setErrors({ ...errors, email: "Email is required" });
+    return;
+  }
+  if (!authState.password) {
+    setErrors({ ...errors, password: "Password is required" });
+    return;
+  }
+  if (!authState.password_confirmation) {
+    setErrors({
+      ...errors,
+      password_confirmation: "Password confirmation is required",
+    });
+    return;
+  }
+  if (authState.password !== authState.password_confirmation) {
+    setErrors({
+      ...errors,
+      password_confirmation: "Password and confirm password must be same",
+    });
+    return;
+  }
+
   setLoading(true);
   try {
     const res = await fetch(Backend_URL + "/auth/register", {
@@ -137,6 +171,9 @@ const submit = async (event: React.FormEvent) => {
                     })
                   }
                 />
+                   <span className="text-red-400 font-bold">
+                  {errors.password_confirmation} 
+                </span>
               </div>
               <div className="mt-5">
                 <Button className="w-full" disabled={loading}>

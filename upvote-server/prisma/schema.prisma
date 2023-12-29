@@ -24,6 +24,11 @@ model User {
   Likes        Likes[]
 }
 
+enum ispublic {
+  true
+  false
+}
+
 model Post {
   id            Int       @id @default(autoincrement())
   user          User      @relation(fields: [user_id], references: [id])
@@ -35,6 +40,8 @@ model Post {
   created_at    DateTime  @default(now())
   Comment       Comment[]
   Likes         Likes[]
+
+  isPublic ispublic @default(true)
 }
 
 model Comment {

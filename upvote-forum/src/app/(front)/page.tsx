@@ -1,3 +1,4 @@
+import AddThread from "@/components/client/AddThread";
 import Image from "next/image";
 import { Suspense } from "react";
 
@@ -14,7 +15,7 @@ export default async function Home() {
           className="hidden md:block"
         />
       </div>
-   
+      <AddThread />
     </div>
   );
 }

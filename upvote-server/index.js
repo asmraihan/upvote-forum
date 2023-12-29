@@ -25,10 +25,12 @@ app.use(fileupload());
 
 //? CONTROLERS IMPORT
 const auth = require("./routes/auth")
+const thread = require("./routes/thread")
 
 
 //? CONTROLLERS USE
 app.use("/auth", auth)
+app.use("/thread", thread)
 
 
 //? VIEW ENGINE
