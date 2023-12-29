@@ -61,7 +61,7 @@ export default function SideBarLinks({ isOpen, setIsOpen }: SideBarLinksProps): 
             }`}
         >
           <User2 className="text-xl " height={20} width={20} />
-          <h3 className="text-lg lg:text-xl  ml-2">Profile</h3>
+          <h3 className="text-lg lg:text-xl  ml-2">Profile</h3> <span className="ms-2">({data?.user?.email})</span>
         </Link>
       </li>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,18 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Env from "@/config/env";
+import { Backend_URL } from "@/lib/constants";
+import { useSession } from "next-auth/react";
 export default function Register() {
   const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status == "authenticated") {
+      router.push("/");
+    }
+  }, [status]);
+
   const [authState, setAuthState] = useState<AuthStateType>({
     name: "",
     email: "",
@@ -20,28 +30,31 @@ export default function Register() {
   });
   const [errors, setErrors] = useState<AuthErrorType>({});
   const [loading, setLoading] = useState<boolean>(false);
-console.log(Env.APP_URL)
+console.log(Backend_URL)
 
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    axios
-      .post(`http://localhost:5000/auth/register`, authState)
-      .then((res) => {
-        console.log(res)
-        setLoading(false);
-        const response = res.data;
-        if (response.status == 400) {
-          setErrors(response.errors);
-        } else if (response.status == 200) {
-          router.push(`/login?message=${response.message}`);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log("The error is", err);
-      });
-  };
+const submit = async (event: React.FormEvent) => {
+  event.preventDefault();
+  setLoading(true);
+  try {
+    const res = await fetch(Backend_URL + "/auth/register", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(authState)
+    });
+    const response = await res.json();
+    setLoading(false);
+    if (response.status == 400) {
+      setErrors(response.errors);
+    } else if (response.status == 200) {
+      router.push(`/login?message=${response.message}`);
+    }
+  } catch (err) {
+    setLoading(false);
+    console.log("The error is", err);
+  }
+};
 
   return (
     <div className="bg-background">

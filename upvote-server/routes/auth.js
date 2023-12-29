@@ -80,7 +80,6 @@ router.post('/register', async (req, res) => {
 
 
 
-
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -102,6 +101,7 @@ router.post('/login', async (req, res) => {
                 res.status(200).json({
                     status: 200,
                     message: 'You logged in successfully!',
+                    user: isUserExist,
                 });
             } else {
                 res.status(400).json({

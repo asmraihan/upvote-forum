@@ -11,6 +11,7 @@ import { signIn } from "next-auth/react";
 import ThemeToggleBtn from "@/components/common/ThemeToggleBtn";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Backend_URL } from "@/lib/constants";
 
 export default function Login() {
   const params = useSearchParams();
@@ -34,7 +35,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(Backend_URL + "/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

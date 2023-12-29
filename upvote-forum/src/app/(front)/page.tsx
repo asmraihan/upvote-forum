@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 
 export default async function Home() {
+
   return (
     <div>
       <div className="flex justify-center items-center invert dark:invert-0 pt-4">
