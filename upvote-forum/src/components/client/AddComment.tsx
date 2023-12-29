@@ -83,7 +83,7 @@ export default function AddComment({ post }: { post: PostType }) {
 
             <div className="mt-5 text-right">
               <Button size="sm" disabled={loading} onClick={submit}>
-                {loading ? "Processing..." : "Post Comment"}
+                {loading ? "Processing..." : "Comment"}
               </Button>
             </div>
           </DialogDescription>
