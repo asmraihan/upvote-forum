@@ -16,7 +16,6 @@ interface SideBarLinksProps {
 export default function SideBarLinks({ isOpen, setIsOpen }: SideBarLinksProps): ReactElement | null {
   const pathname = usePathname();
   const { data } = useSession();
-  console.log("The data is", data)
   return (
     <ul onClick={
       () => {

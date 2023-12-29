@@ -53,7 +53,6 @@ export default function Login() {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
       setLoading(false);
 
       if (responseData.status === 200) {

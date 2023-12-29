@@ -16,7 +16,6 @@ import { Backend_URL } from "@/lib/constants";
 export default function AddThread() {
   const { toast } = useToast();
   const { data } = useSession();
-  console.log("The data is", data)
   const router = useRouter();
   const imageRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<File | null>(null);
@@ -32,7 +31,6 @@ export default function AddThread() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      console.log("The image is", selectedFile);
       setImage(selectedFile);
       const imageUrl = URL.createObjectURL(selectedFile);
       setPreviewUrl(imageUrl);
@@ -57,7 +55,6 @@ export default function AddThread() {
       .then((res) => res.json())
       .then((response) => {
         setLoading(false);
-        console.log("The response is", response)
         if (response.status == 400) {
           setErrors(response.errors);
         } else if (response.status == 200) {

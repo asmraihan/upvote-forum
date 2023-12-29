@@ -40,6 +40,7 @@ type PostType = {
   image?: string;
   comment_count: number;
   like_count: number;
+  isPublic: string;
   created_at: string;
   user: User;
   Likes: Array<PostLikeType> | [];

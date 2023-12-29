@@ -1,7 +1,7 @@
-const { uploadFile } = require("../uploadFile");
 const prisma = require("../utils/prisma");
 const express = require('express');
 const router = express.Router();
+const { uploadFile } = require("../uploadFile");
 
 // TODO THREAD ENDPOINTS
 
@@ -11,11 +11,11 @@ router.post('/createThread', async (req, res) => {
     try {
         const data = {
             content: formData.content,
-            image: '',
+            image: null,
             isPublic: formData.isPublic,
         };
 
-        const image = req.files.img;
+        const image = req?.files?.img;
         if (image) {
             try {
                 const filename = await uploadFile(image, 'uploads/threads');
@@ -39,12 +39,21 @@ router.post('/createThread', async (req, res) => {
                 },
             },
         });
-        return res.status(200).json({ status: 200, message: 'Post created successfully!' });
+        return res.status(200).json({ status: 200, message: 'Thread created successfully!' });
     }
     catch (error) {
         return res.status(500).json({ status: 500, error: error.message });
     }
 });
+
+// router.post('/getAllPosts2', async (req, res) => {
+//     try {
+//         const result = await prisma.post.findMany({})
+//         res.send(result)
+//     } catch (error) {
+//         console.log({error : error.message})
+//     }
+// })
 
 router.post('/getAllPosts', async (req, res) => {
     const formData = req.body;
@@ -71,7 +80,6 @@ router.post('/getAllPosts', async (req, res) => {
             },
         });
 
-        console.log(posts);
 
         return res.status(200).json({status: 200, data: posts});
     } catch (error) {

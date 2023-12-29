@@ -31,7 +31,6 @@ export default function Register() {
   });
   const [errors, setErrors] = useState<AuthErrorType>({});
   const [loading, setLoading] = useState<boolean>(false);
-console.log(Backend_URL)
 
 const submit = async (event: React.FormEvent) => {
   event.preventDefault();
