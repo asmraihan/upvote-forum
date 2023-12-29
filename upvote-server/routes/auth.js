@@ -6,15 +6,6 @@ const { createToken } = require("../utils/token");
 const { uploadFile } = require("../uploadFile");
 
 // TODO USER ENDPOINTS
-// router.post('/getAllUsers', async (req, res) => {
-//     try {
-//         const users = await prisma.user.findMany();
-//         res.status(200).json({ message: "User Login Successfully", users, success: true });
-//     } catch (error) {
-//         res.status(500).json({ error: "Internal server error", ...error, success: false });
-//     }
-// });
-
 
 router.post('/register', async (req, res) => {
     const { email, password, username, name } = req.body;
@@ -162,6 +153,39 @@ router.post('/authUser', async (req, res) => {
                 },
             });
         }
+    } catch (error) {
+        res.status(500).json({
+            error: 'Internal server error',
+            message: error.message,
+            success: false,
+        });
+    }
+});
+
+
+// Get all users
+
+router.post('/users', async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                username: true,
+                email: true,
+                image: true,
+                created_at: true,
+                Post: true,
+                Comment: true,
+                Notification: true,
+                Likes: true
+            }
+        });
+        res.status(200).json({
+            status: 200,
+            users,
+            success: true,
+        });
     } catch (error) {
         res.status(500).json({
             error: 'Internal server error',

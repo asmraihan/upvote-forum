@@ -8,8 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import ThemeToggleBtn from "@/components/common/ThemeToggleBtn";
-
+import Env from "@/config/env";
 export default function Register() {
   const router = useRouter();
   const [authState, setAuthState] = useState<AuthStateType>({
@@ -21,14 +20,15 @@ export default function Register() {
   });
   const [errors, setErrors] = useState<AuthErrorType>({});
   const [loading, setLoading] = useState<boolean>(false);
+console.log(Env.APP_URL)
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-
     axios
-      .post("/api/auth/register", authState)
+      .post(`http://localhost:5000/auth/register`, authState)
       .then((res) => {
+        console.log(res)
         setLoading(false);
         const response = res.data;
         if (response.status == 400) {

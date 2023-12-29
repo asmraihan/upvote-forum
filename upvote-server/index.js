@@ -12,9 +12,7 @@ const nodemailer = require("nodemailer");
 const https = require("https");
 const fs = require("fs");
 const console = require("console");
-
 //? MIDDLEWARES
-// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 var corsOptions = {
@@ -34,7 +32,7 @@ app.use("/auth", auth)
 
 
 //? VIEW ENGINE
-app.get("/server-test", (req, res) => {
+app.get("/", (req, res) => {
     res.send("<center><h1>Server is Running</h1></center>");
 });
 app.get("/test", (req, res) => {

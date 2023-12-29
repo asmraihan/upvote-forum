@@ -29,30 +29,49 @@ export default function Login() {
     }
   }, [status]);
 
-  const login = (event: React.FormEvent) => {
+  const login = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-    axios
-      .post("/api/auth/login", authState)
-      .then((res) => {
-        setLoading(false);
-        const response = res.data;
-        if (response.status == 200) {
-          signIn("credentials", {
-            email: authState.email,
-            password: authState.password,
-            callbackUrl: "/",
-            redirect: true,
-          });
-        } else if (response.status == 400) {
-          setErrors(response.errors);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log("the error is", err);
+
+    try {
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(authState),
       });
+
+      if (!response.ok) {
+        // Handle non-2xx status codes
+        const errorData = await response.json();
+        setLoading(false);
+        setErrors(errorData.errors);
+        console.log("Request failed with status:", response.status);
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+      setLoading(false);
+
+      if (responseData.status === 200) {
+        signIn("credentials", {
+          email: authState.email,
+          password: authState.password,
+          callbackUrl: "/",
+          redirect: true,
+        });
+        router.push(`/`);
+      } else if (responseData.status === 400) {
+        setErrors(responseData.errors);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("An error occurred:", error);
+    }
   };
+
 
   return (
     <div className="bg-background">
