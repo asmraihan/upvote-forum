@@ -1,0 +1,13 @@
+{
+  "name": "upvote",
+  "version": "1.0.0",
+  "description": "upvote client+server",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd upvote-server && npm run start",
+    "client": "cd upvote-forum && npm run dev",
+    "build": "prisma generate && next build"
+  },
+  "author": "",
+  "license": "ISC"
+}
